@@ -5,8 +5,12 @@ build/
 temp/
 .env
 coverage
-ormconfig.json
+# ormconfig.json
 dist
 
 uploads/*
 !uploads/.gitkeep
+
+yarn.lock
+package-lock.json
+yarn-error.log
