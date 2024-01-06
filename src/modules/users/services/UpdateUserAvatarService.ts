@@ -18,7 +18,7 @@ class UpdateUsarAvatarService {
     const user = await usersRepository.findById(user_id);
 
     if (!user) {
-      throw new AppError('User not found.', 400);
+      throw new AppError('User not found.');
     }
 
     if (user.avatar) {
@@ -37,3 +37,5 @@ class UpdateUsarAvatarService {
     return user;
   }
 }
+
+export default UpdateUsarAvatarService;
