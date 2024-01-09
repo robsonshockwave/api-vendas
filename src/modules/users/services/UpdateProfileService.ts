@@ -12,7 +12,7 @@ interface IRequest {
   old_password?: string;
 }
 
-class UpdateProfileUser {
+class UpdateProfileService {
   public async execute({
     user_id,
     name,
@@ -57,4 +57,4 @@ class UpdateProfileUser {
   }
 }
 
-export default UpdateProfileUser;
+export default UpdateProfileService;
