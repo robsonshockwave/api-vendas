@@ -19,9 +19,9 @@ export default class CustomersController {
 
     const listCustomers = new ShowCustomerService();
 
-    const customers = await listCustomers.execute({ id });
+    const customer = await listCustomers.execute({ id });
 
-    return response.json(customers);
+    return response.json(customer);
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
@@ -35,8 +35,8 @@ export default class CustomersController {
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
-    const { id } = request.params;
     const { name, email } = request.body;
+    const { id } = request.params;
 
     const updateCustomer = new UpdateCustomerService();
 

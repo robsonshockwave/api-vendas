@@ -14,13 +14,15 @@ class UpdateCustomerService {
 
     const customer = await customersRepository.findById(id);
 
+    console.log(customer, 'asasasas');
+
     if (!customer) {
       throw new Error('Customer not found.');
     }
 
-    const customerExists = await customersRepository.findByName(email);
+    const emailExists = await customersRepository.findByEmail(email);
 
-    if (customerExists && email !== customer.email) {
+    if (emailExists && email !== customer.email) {
       throw new Error('There is already one customer with this email.');
     }
 
