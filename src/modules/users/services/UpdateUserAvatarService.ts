@@ -1,10 +1,10 @@
-import { getCustomRepository } from 'typeorm';
-import UsersRepository from '../typeorm/repositories/UsersRepository';
-import User from '../typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
 import path from 'path';
-import uploadConfig from '@config/upload';
 import fs from 'fs';
+import { getCustomRepository } from 'typeorm';
+import User from '../typeorm/entities/User';
+import UsersRepository from '../typeorm/repositories/UsersRepository';
+import uploadConfig from '@config/upload';
 
 interface IRequest {
   user_id: string;
@@ -28,11 +28,11 @@ class UpdateUserAvatarService {
       if (userAvatarFileExists) {
         await fs.promises.unlink(userAvatarFilePath);
       }
-
-      user.avatar = avatarFileName;
-
-      await usersRepository.save(user);
     }
+
+    user.avatar = avatarFileName;
+
+    await usersRepository.save(user);
 
     return user;
   }
