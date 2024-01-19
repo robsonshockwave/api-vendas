@@ -15,8 +15,6 @@ export default class RedisCache {
   }
 
   public async recover<T>(key: string): Promise<T | null> {
-    console.log(key);
-
     const data = await this.client.get(key);
 
     if (!data) {
@@ -29,8 +27,6 @@ export default class RedisCache {
   }
 
   public async invalidate(key: string): Promise<void> {
-    console.log(key);
-
     await this.client.del(key);
   }
 }
