@@ -1,3 +1,1 @@
- 
-api-vendas
-
+Api de registro de vendas
