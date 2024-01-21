@@ -29,5 +29,3 @@ export default async function rateLimiter(
     throw new AppError('Too many requests.', 429);
   }
 }
-
-//
