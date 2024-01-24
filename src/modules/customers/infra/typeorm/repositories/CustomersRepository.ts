@@ -35,6 +35,12 @@ class CustomersRepository implements ICustomersRepository {
     return customer;
   }
 
+  public async find(): Promise<Customer[]> {
+    const customers = await this.ormRepository.find();
+
+    return customers;
+  }
+
   public async findById(id: string): Promise<Customer | undefined> {
     const customer = await this.ormRepository.findOne({
       where: {
@@ -43,6 +49,16 @@ class CustomersRepository implements ICustomersRepository {
     });
 
     return customer;
+  }
+
+  public async findOne(id: string): Promise<Customer | undefined> {
+    const customer = await this.ormRepository.findOne(id);
+
+    return customer;
+  }
+
+  public async remove(customer: Customer): Promise<void> {
+    await this.ormRepository.remove(customer);
   }
 
   public async findByEmail(email: string): Promise<Customer | undefined> {

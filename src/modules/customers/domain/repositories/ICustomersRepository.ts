@@ -1,5 +1,5 @@
-import { ICreateCustomer } from "../models/ICreateCustomer";
-import { ICustomer } from "../models/ICustomer";
+import { ICreateCustomer } from '../models/ICreateCustomer';
+import { ICustomer } from '../models/ICustomer';
 
 export interface ICustomersRepository {
   findByName(name: string): Promise<ICustomer | undefined>;
@@ -7,4 +7,7 @@ export interface ICustomersRepository {
   findByEmail(email: string): Promise<ICustomer | undefined>;
   create(data: ICreateCustomer): Promise<ICustomer>;
   save(customer: ICustomer): Promise<ICustomer>;
+  find(): Promise<ICustomer[]>;
+  findOne(id: string): Promise<ICustomer | undefined>;
+  remove(customer: ICustomer): Promise<void>;
 }
