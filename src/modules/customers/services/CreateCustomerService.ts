@@ -4,11 +4,13 @@ import { ICreateCustomer } from '../domain/models/ICreateCustomer';
 import { ICustomersRepository } from '../domain/repositories/ICustomersRepository';
 
 class CreateCustomerService {
-  constructor(private customersRepository: ICustomersRepository) {}
+  private customersRepository: ICustomersRepository;
+
+  constructor(customersRepository: ICustomersRepository) {
+    this.customersRepository = customersRepository;
+  }
 
   public async execute({ name, email }: ICreateCustomer): Promise<Customer> {
-
-
     const customerExists = await this.customersRepository.findByEmail(email);
 
     if (customerExists) {

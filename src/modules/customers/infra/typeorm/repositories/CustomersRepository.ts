@@ -7,10 +7,10 @@ class CustomersRepository implements ICustomersRepository {
   private ormRepository: Repository<Customer>;
 
   constructor() {
-    this.ormRepository = new getRepository(Customer);
+    this.ormRepository = getRepository(Customer);
   }
 
-  public async create({name, email}: ICreateCustomer): Promise<Customer> {
+  public async create({ name, email }: ICreateCustomer): Promise<Customer> {
     const customer = this.ormRepository.create({
       name,
       email,
