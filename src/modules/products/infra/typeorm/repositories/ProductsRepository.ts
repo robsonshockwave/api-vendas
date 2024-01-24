@@ -1,15 +1,52 @@
-import { EntityRepository, In, Repository } from 'typeorm';
+import { In, Repository, getRepository } from 'typeorm';
 import Product from '../entities/Product';
+import { IFindProducts } from '@modules/products/domain/models/IFindProducts';
+import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
+import { ICreateProduct } from '@modules/products/domain/models/ICreateProduct';
+import { IUpdateStockProduct } from '@modules/products/domain/models/IUpdateStockProduct';
 
-interface IFindProducts {
-  id: string;
-}
+export class ProductsRepository implements IProductsRepository {
+  private ormRepository: Repository<Product>;
 
-@EntityRepository(Product)
-export class ProductsRepository extends Repository<Product> {
+  constructor() {
+    this.ormRepository = getRepository(Product);
+  }
+
+  public async updateStock(products: IUpdateStockProduct[]): Promise<void> {
+    await this.ormRepository.save(products);
+  }
+
+  public async create(data: ICreateProduct): Promise<Product> {
+    const product = this.ormRepository.create(data);
+
+    await this.ormRepository.save(product);
+
+    return product;
+  }
+
+  public async save(product: Product): Promise<Product> {
+    return this.ormRepository.save(product);
+  }
+
+  public async remove(product: Product): Promise<void> {
+    await this.ormRepository.remove(product);
+  }
+
+  public async findOne(id: string): Promise<Product | undefined> {
+    const product = await this.ormRepository.findOne(id);
+
+    return product;
+  }
+
+  public async find(): Promise<Product[]> {
+    const products = await this.ormRepository.find();
+
+    return products;
+  }
+
   public async findByName(name: string): Promise<Product | undefined> {
     // The method findOne is a method from the Repository class
-    const product = await this.findOne({
+    const product = await this.ormRepository.findOne({
       where: {
         name,
       },
@@ -22,7 +59,7 @@ export class ProductsRepository extends Repository<Product> {
     // The method find is a method from the Repository class
     const productIds = products.map(product => product.id);
 
-    const existsProducts = await this.find({
+    const existsProducts = await this.ormRepository.find({
       where: {
         id: In(productIds),
       },
