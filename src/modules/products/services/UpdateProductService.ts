@@ -1,5 +1,3 @@
-import { getCustomRepository } from 'typeorm';
-import { ProductsRepository } from '../infra/typeorm/repositories/ProductsRepository';
 import AppError from '@shared/errors/AppError';
 import redisCache from '@shared/cache/RedisCache';
 import { IUpdateProduct } from '../domain/models/IUpdateProduct';
