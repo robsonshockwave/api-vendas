@@ -1,13 +1,16 @@
 import { ICreateCustomer } from '@modules/customers/domain/models/ICreateCustomer';
 import Customer from '../entities/Customer';
 import { ICustomersRepository } from '@modules/customers/domain/repositories/ICustomersRepository';
-import { Repository, getRepository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { dataSource } from '@shared/infra/typeorm';
+import { SearchParams } from '@modules/customers/domain/repositories/ICustomersRepository';
+import { ICustomerPaginate } from '@modules/customers/domain/models/ICustomerPaginate';
 
 class CustomersRepository implements ICustomersRepository {
   private ormRepository: Repository<Customer>;
 
   constructor() {
-    this.ormRepository = getRepository(Customer);
+    this.ormRepository = dataSource.getRepository(Customer);
   }
 
   public async create({ name, email }: ICreateCustomer): Promise<Customer> {
@@ -25,34 +28,39 @@ class CustomersRepository implements ICustomersRepository {
     return this.ormRepository.save(customer);
   }
 
-  public async findByName(name: string): Promise<Customer | undefined> {
-    const customer = await this.ormRepository.findOne({
-      where: {
-        name,
-      },
+  public async findByName(name: string): Promise<Customer | null> {
+    const customer = await this.ormRepository.findOneBy({
+      name,
     });
 
     return customer;
   }
 
-  public async find(): Promise<Customer[]> {
-    const customers = await this.ormRepository.find();
+  public async findAll({
+    page,
+    skip,
+    take,
+  }: SearchParams): Promise<ICustomerPaginate> {
+    const [customers, count] = await this.ormRepository
+      .createQueryBuilder()
+      .skip(skip)
+      .take(take)
+      .getManyAndCount();
 
-    return customers;
+    const result = {
+      per_page: take,
+      total: count,
+      current_page: page,
+      data: customers,
+    };
+
+    return result;
   }
 
-  public async findById(id: string): Promise<Customer | undefined> {
-    const customer = await this.ormRepository.findOne({
-      where: {
-        id,
-      },
+  public async findById(id: string): Promise<Customer | null> {
+    const customer = await this.ormRepository.findOneBy({
+      id,
     });
-
-    return customer;
-  }
-
-  public async findOne(id: string): Promise<Customer | undefined> {
-    const customer = await this.ormRepository.findOne(id);
 
     return customer;
   }
@@ -61,11 +69,9 @@ class CustomersRepository implements ICustomersRepository {
     await this.ormRepository.remove(customer);
   }
 
-  public async findByEmail(email: string): Promise<Customer | undefined> {
-    const customer = await this.ormRepository.findOne({
-      where: {
-        email,
-      },
+  public async findByEmail(email: string): Promise<Customer | null> {
+    const customer = await this.ormRepository.findOneBy({
+      email,
     });
 
     return customer;
