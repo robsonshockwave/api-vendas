@@ -1,14 +1,15 @@
-import { Repository, getRepository } from 'typeorm';
+import { Repository } from 'typeorm';
 import User from '../entities/User';
 import { ICreateUser } from '@modules/users/domain/models/ICreateUser';
 import { IUser } from '@modules/users/domain/models/IUser';
 import { IUsersRepository } from '@modules/users/domain/repositories/IUsersRepository';
+import { dataSource } from '@shared/infra/typeorm';
 
 class UsersRepository implements IUsersRepository {
   private ormRepository: Repository<User>;
 
   constructor() {
-    this.ormRepository = getRepository(User);
+    this.ormRepository = dataSource.getRepository(User);
   }
 
   public async create({ name, email, password }: ICreateUser): Promise<IUser> {
@@ -33,31 +34,25 @@ class UsersRepository implements IUsersRepository {
     return users;
   }
 
-  public async findByName(name: string): Promise<IUser | undefined> {
-    const user = await this.ormRepository.findOne({
-      where: {
-        name,
-      },
+  public async findByName(name: string): Promise<IUser | null> {
+    const user = await this.ormRepository.findOneBy({
+      name,
     });
 
     return user;
   }
 
-  public async findById(id: string): Promise<IUser | undefined> {
-    const user = await this.ormRepository.findOne({
-      where: {
-        id,
-      },
+  public async findById(id: string): Promise<IUser | null> {
+    const user = await this.ormRepository.findOneBy({
+      id,
     });
 
     return user;
   }
 
-  public async findByEmail(email: string): Promise<IUser | undefined> {
-    const user = await this.ormRepository.findOne({
-      where: {
-        email,
-      },
+  public async findByEmail(email: string): Promise<IUser | null> {
+    const user = await this.ormRepository.findOneBy({
+      email,
     });
 
     return user;

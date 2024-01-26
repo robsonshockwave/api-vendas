@@ -1,4 +1,3 @@
-import { getCustomRepository } from 'typeorm';
 import AppError from '@shared/errors/AppError';
 import { isAfter, addHours } from 'date-fns';
 import { UserTokensRepository } from '../infra/typeorm/repositories/UserTokensRepository';
