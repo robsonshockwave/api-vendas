@@ -19,7 +19,7 @@
     "@types/ioredis": "4.28.10",
     "@types/joi": "^17.2.3",
     "@types/jsonwebtoken": "^9.0.5",
-    "@types/node": "^20.10.4",
+    "@types/node": "^20.11.6",
     "@types/nodemailer": "^6.4.14",
     "@types/redis": "^4.0.11",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
@@ -36,21 +36,22 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" &amp;&amp; exit 1",
-    "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/http/server.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
     "lint": "eslint . --ext .ts",
     "lint-fix": "eslint . --ext .ts --fix",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
-    "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files"
+    "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
+    "migration:run": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -- -d src/shared/infra/typeorm/index.ts"
   },
   "dependencies": {
     "-": "^0.0.1",
     "@types/multer": "^1.4.11",
-    "D": "^1.0.0",
     "aws-sdk": "^2.1540.0",
     "bcryptjs": "^2.4.3",
     "celebrate": "^15.0.3",
     "class-transformer": "^0.5.1",
     "cors": "^2.8.5",
+    "D": "^1.0.0",
     "date-fns": "^3.1.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
@@ -65,6 +66,7 @@
     "rate-limiter-flexible": "^4.0.0",
     "redis": "^4.6.12",
     "reflect-metadata": "^0.1.14",
-    "typeorm": "0.2.29"
+    "tsyringe": "^4.8.0",
+    "typeorm": "^0.3.19"
   }
 }
