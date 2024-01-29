@@ -33,16 +33,16 @@ services:
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
 
-  # pgadmin:
-  #   image: dpage/pgadmin4
-  #   container_name: apivendas-pgadmin
-  #   tty: true
-  #   environment:
-  #     - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-  #     - PGADMIN_DEFAULT_PASSWORD=admin
-  #   ports:
-  #     - '8000:80'
-  #   depends_on:
-  #     - db
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: apivendas-pgadmin
+    tty: true
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - '8000:80'
+    depends_on:
+      - db
 
 # rodar o comando antes do docker-compose up: chmod +x .docker/entrypoint.sh
