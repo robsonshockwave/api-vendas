@@ -15,4 +15,4 @@ yarn.lock
 package-lock.json
 yarn-error.log
 
-*/dbdata
+.docker/dbdata
