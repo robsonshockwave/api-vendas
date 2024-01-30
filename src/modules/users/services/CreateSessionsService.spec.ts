@@ -1,22 +1,25 @@
 import 'reflect-metadata';
 import AppError from '@shared/errors/AppError';
-import CreateUserService from './CreateUserService';
 import FakeUsersRepository from '../domain/repositories/fakes/FakeUserRepository';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
+import CreateSessionsService from './CreateSessionsService';
 
 let fakeUsersRepository: FakeUsersRepository;
-let createUser: CreateUserService;
+let createSession: CreateSessionsService;
 let hashProvider: FakeHashProvider;
 
-describe('CreateUser', () => {
+describe('CreateSession', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     hashProvider = new FakeHashProvider();
-    createUser = new CreateUserService(fakeUsersRepository, hashProvider);
+    createSession = new CreateSessionsService(
+      fakeUsersRepository,
+      hashProvider,
+    );
   });
 
   it('should be able to create a new user', async () => {
-    const user = await createUser.execute({
+    const user = await fakeUsersRepository.create({
       name: 'Robson Arruda',
       email: 'robson@email.com',
       password: 'teste123',
@@ -25,15 +28,15 @@ describe('CreateUser', () => {
     expect(user).toHaveProperty('id');
   });
 
-  it('should not be able to create two users with the same email', async () => {
-    await createUser.execute({
+  it('should not be able to create two customers with the same email', async () => {
+    await createSession.execute({
       name: 'Robson Arruda',
       email: 'robson2@email.com',
       password: 'teste123',
     });
 
     expect(
-      createUser.execute({
+      createSession.execute({
         name: 'Robson Arruda',
         email: 'robson2@email.com',
         password: 'teste123',
