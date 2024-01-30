@@ -18,28 +18,43 @@ describe('CreateSession', () => {
     );
   });
 
-  it('should be able to create a new user', async () => {
+  it('should be able to authenticate', async () => {
     const user = await fakeUsersRepository.create({
       name: 'Robson Arruda',
       email: 'robson@email.com',
       password: 'teste123',
     });
 
-    expect(user).toHaveProperty('id');
+    const response = await createSession.execute({
+      email: 'robson@email.com',
+      password: 'teste123',
+    });
+
+    expect(response).toHaveProperty('token');
+    expect(response.user).toEqual(user);
   });
 
-  it('should not be able to create two customers with the same email', async () => {
-    await createSession.execute({
+  it('should not be able to authenticate with non existing user', async () => {
+    // O usuário não está sendo criado, logo não existe esse usuário
+    expect(
+      createSession.execute({
+        email: 'robson@email.com',
+        password: 'teste123',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to authenticate with wrong password', async () => {
+    await fakeUsersRepository.create({
       name: 'Robson Arruda',
-      email: 'robson2@email.com',
+      email: 'robson@email.com',
       password: 'teste123',
     });
 
     expect(
       createSession.execute({
-        name: 'Robson Arruda',
-        email: 'robson2@email.com',
-        password: 'teste123',
+        email: 'robson@email.com',
+        password: 'teste12345678910',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
