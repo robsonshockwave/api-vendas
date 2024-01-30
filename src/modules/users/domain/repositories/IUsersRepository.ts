@@ -7,5 +7,5 @@ export interface IUsersRepository {
   findByEmail(email: string): Promise<IUser | null>;
   create(data: ICreateUser): Promise<IUser>;
   save(user: IUser): Promise<IUser>;
-  find(): Promise<IUser[]>;
+  findAll(): Promise<IUser[]>;
 }
