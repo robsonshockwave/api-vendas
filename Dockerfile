@@ -7,9 +7,3 @@ RUN apk add --no-cache bash
 USER node
 
 WORKDIR /home/node/app
-
-RUN npm install
-
-RUN npm run typeorm migration:run
-
-RUN npm run dev
